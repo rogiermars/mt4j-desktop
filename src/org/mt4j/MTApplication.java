@@ -40,6 +40,7 @@ import org.mt4j.util.opengl.JoglGL20Plus;
 
 import processing.core.PApplet;
 import processing.opengl.PGraphicsOpenGL;
+import processing.opengl.PJOGL;
 
 
 public abstract class MTApplication extends AbstractMTApplication {
@@ -207,7 +208,7 @@ public abstract class MTApplication extends AbstractMTApplication {
 		
 		// Applet size - size() must be the first command in setup() method
 		if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.OPENGL_MODE)
-			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), CUSTOM_OPENGL_GRAPHICS);
+			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), OPENGL);
 		else if (MT4jSettings.getInstance().getRendererMode() == MT4jSettings.P3D_MODE)
 			this.size(MT4jSettings.getInstance().getWindowWidth(), MT4jSettings.getInstance().getWindowHeight(), PApplet.P3D);
 		
@@ -295,7 +296,7 @@ public abstract class MTApplication extends AbstractMTApplication {
 	    logger.info("Maximum framerate: \"" + MT4jSettings.getInstance().getMaxFrameRate() + "\"");
 	    
 	    //FIXME TODO add in settings.txt?
-	    hint(AbstractMTApplication.DISABLE_OPENGL_ERROR_REPORT);
+	    hint(AbstractMTApplication.DISABLE_OPENGL_ERRORS);
 		
 		MT4jSettings.getInstance().programStartTime = System.currentTimeMillis();
 		
@@ -333,7 +334,7 @@ public abstract class MTApplication extends AbstractMTApplication {
 	
 
 	protected void loadGL(){
-		String version = ((PGraphicsOpenGL)g).gl.glGetString(GL.GL_VERSION);
+		String version = getGL().glGetString(GL.GL_VERSION);
 		logger.info("OpenGL Version: " + version);
         int major = Integer.parseInt("" + version.charAt(0));
         int minor = Integer.parseInt("" + version.charAt(2));
@@ -342,7 +343,8 @@ public abstract class MTApplication extends AbstractMTApplication {
         this.gl20Supported = false;
         if (major >= 2) {
 //                JoglGL20 jogl20 = new JoglGL20(((PGraphicsOpenGL)g).gl);
-        		JoglGL20Plus jogl20 = new JoglGL20Plus(((PGraphicsOpenGL)g).gl);
+        		
+        		JoglGL20Plus jogl20 = new JoglGL20Plus(getGL().getGL2());
                 iGL20 = jogl20;
                 //FIXME ADDED
                 iGL10  = jogl20;
@@ -354,16 +356,16 @@ public abstract class MTApplication extends AbstractMTApplication {
                 this.gl11PlusSupported = true;
         } else {
                 if (major == 1 && minor < 5) {
-                        iGL10 = new JoglGL10(((PGraphicsOpenGL)g).gl);
+                        iGL10 = new JoglGL10(getGL().getGL2());
                 } else {
-                        iGL11 = new JoglGL11(((PGraphicsOpenGL)g).gl);
+                        iGL11 = new JoglGL11(getGL().getGL2());
                         iGL10 = iGL11;
                         this.gl11Supported = true;
                 }
                 glCommon = iGL10;
         }
 	}
-	
+
 	/**
 	 * Apply open gl start settings.
 	 */

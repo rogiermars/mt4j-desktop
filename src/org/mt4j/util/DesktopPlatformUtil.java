@@ -12,8 +12,8 @@ import org.mt4j.util.opengl.IGLU;
 import org.mt4j.util.opengl.JoglGLU;
 
 import processing.core.PGraphics;
-import processing.core.PGraphics3D;
 import processing.core.PMatrix3D;
+import processing.opengl.PGraphics3D;
 import processing.opengl.PGraphicsOpenGL;
 
 public class DesktopPlatformUtil implements IPlatformUtil {
@@ -21,10 +21,10 @@ public class DesktopPlatformUtil implements IPlatformUtil {
 	private final JoglGLU joglGLU;
 	private PGraphics3D pg3d;
 
-	public DesktopPlatformUtil(AbstractMTApplication app){
+	public DesktopPlatformUtil(AbstractMTApplication app) {
 		this.app = app;
 		this.joglGLU = new JoglGLU(new GLU());
-		this.pg3d = ((PGraphics3D)app.getPGraphics());
+		this.pg3d = (PGraphics3D) app.getPGraphics();
 	}
 
 	public PGraphics getPGraphics(){
@@ -85,13 +85,13 @@ public class DesktopPlatformUtil implements IPlatformUtil {
 	}
 
 	public GL10 beginGL() {
-		((PGraphicsOpenGL)app.getPGraphics()).beginGL();
+		((PGraphicsOpenGL)app.getPGraphics()).beginPGL();
 //		app.beginGL();
 		return app.getGL10();
 	}
     
     public void endGL(){
-    	((PGraphicsOpenGL)app.getPGraphics()).endGL();
+    	((PGraphicsOpenGL)app.getPGraphics()).endPGL();
 //    	app.endGL();
     }
     
@@ -120,7 +120,7 @@ public class DesktopPlatformUtil implements IPlatformUtil {
 
 	@Override
 	public boolean isBigEndian() {
-		return PGraphicsOpenGL.BIG_ENDIAN;
+		return false;
 	}
 
 	@Override

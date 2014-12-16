@@ -42,6 +42,8 @@ public class MainDrawingScene extends AbstractScene {
 		super(mtApplication, name);
 		this.pa = mtApplication;
 		
+		this.getCanvas().scale(1F,-1F,1F,new Vector3D(1024/2,768/2));
+		
 		if (!(MT4jSettings.getInstance().isOpenGlMode() && GLFBO.isSupported(pa))){
 			System.err.println("Drawing example can only be run in OpenGL mode on a gfx card supporting the GL_EXT_framebuffer_object extension!");
 			return;

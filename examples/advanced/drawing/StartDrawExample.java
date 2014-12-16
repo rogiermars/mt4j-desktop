@@ -2,6 +2,7 @@ package advanced.drawing;
 
 import org.mt4j.MTApplication;
 
+
 public class StartDrawExample extends MTApplication{
 	/**
 	 * 
